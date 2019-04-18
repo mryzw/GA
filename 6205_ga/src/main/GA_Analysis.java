@@ -1,6 +1,9 @@
 package main;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+
+import org.jfree.ui.RefineryUtilities;
 
 	public class GA_Analysis {
 	    static int max = 101;
@@ -30,6 +33,15 @@ import java.util.Random;
 	    double[] probabilityArr;// 种群中各个个体的累计概率
 	    double[] x1;
 	    double[] y1;
+	    ArrayList<Double> bestFitnessPerGene;
+	    
+	    public int getT() {
+	    	return this.T;
+	    }
+	    
+	    public ArrayList<Double> getbestFitnessPerGene() {
+	    	return this.bestFitnessPerGene;
+	    }
 	 
 	    // 初始化函数
 	    void initData() {
@@ -56,6 +68,7 @@ import java.util.Random;
 	        probabilityArr = new double[populationScale];// 种群中各个个体的累计概率
 	        x1 = new double[clientNum + 1];
 	        y1 = new double[clientNum + 1];
+	        bestFitnessPerGene = new ArrayList<Double>();
 	        // 车辆最大载重和最大行驶
 	        vehicleInfoMatrix[1][0] = 8.0;
 	        vehicleInfoMatrix[1][1] = 50.0;
@@ -285,6 +298,7 @@ import java.util.Random;
 	                maxid = k;
 	            }
 	        }
+	        bestFitnessPerGene.add(maxevaluation);
 	 
 	        if (bestFitness < maxevaluation) {
 	            bestFitness = maxevaluation;
@@ -293,6 +307,7 @@ import java.util.Random;
 	        }
 	        // 复制染色体，k表示新染色体在种群中的位置，kk表示旧的染色体在种群中的位置
 	        copyChrosome(0, maxid);// 将当代种群中适应度最高的染色体k复制到新种群中，排在第一位0
+//	        return maxevaluation;
 	    }
 	 
 	    // 产生随机数
@@ -483,22 +498,31 @@ import java.util.Random;
 	 
 	    public static void main(String[] args) {
 	    	GA_Analysis vehicleRoutingProblem = new GA_Analysis();
-	        int count = 50;
+//	        int count = 50;
 	        double generationNum = 0;
 	        double totalFitness = 0;
 	        BestResult bestResult = null;
-	        for (int i = 0; i < count; i++) {
+	        final DynamicLineAndTimeSeriesChart demo = new DynamicLineAndTimeSeriesChart("Dynamic Line And TimeSeries Chart");
+//	        for (int i = 0; i < count; i++) {
 	            System.out.println(
-	                    "/////////the " + (i + 1) + "iteration start...////////");
+	                    "/////////the " + (1) + "iteration start...////////");
 	            bestResult = vehicleRoutingProblem.solveVrp();
 	            totalFitness += bestResult.getBestFitness();
 	            generationNum += bestResult.getBestGenerationNum();
 	            System.out.println(
-	                    "/////////the " + (i + 1) + "iteration end...////////");
+	                    "/////////the " + (1) + "iteration end...////////");
 	            System.out.println();
+	        for (int i = 0; i < vehicleRoutingProblem.getT(); i +=10) {
+	        	System.out.println(i + "th best fintness: " + vehicleRoutingProblem.getbestFitnessPerGene().get(i));
+	        	DynamicLineAndTimeSeriesChart.data.add(vehicleRoutingProblem.getbestFitnessPerGene().get(i));
 	        }
-	        System.out.println("平均在第" + (generationNum / count) + "代找到最有解。");
-	        System.out.println("平均的路成为：" + (totalFitness / count));
+	        
+	        demo.pack();
+	        RefineryUtilities.centerFrameOnScreen(demo);
+	        demo.setVisible(true);
+//	        }
+//	        System.out.println("平均在第" + (generationNum / count) + "代找到最有解。");
+//	        System.out.println("平均的路成为：" + (totalFitness / count));
 	 
 	    }
 	 
