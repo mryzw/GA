@@ -25,7 +25,7 @@ public class GA_Analysis_Test {
 		ga.initData();
 		ga.initGroup();
 		double fit = ga.caculateFitness(ga.oldMatrix[0]);
-		System.out.println("fit:"+fit);
+		assertEquals(true,fit>0);
 	}
 	
 	// check the fitness function is right
@@ -110,7 +110,7 @@ public class GA_Analysis_Test {
 		ga.initGroup();
 		int[] tempGA = new int[ga.clientNum];
 		 
-        // 计算初始化种群适应度，Fitness[max]
+        // calculate fitness
         for (int k = 0; k < ga.populationScale; k++) {
             for (int i = 0; i < ga.clientNum; i++) {
                 tempGA[i] = ga.oldMatrix[k][i];
