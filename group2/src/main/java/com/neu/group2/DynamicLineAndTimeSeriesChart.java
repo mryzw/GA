@@ -128,6 +128,8 @@ public class DynamicLineAndTimeSeriesChart extends ApplicationFrame implements A
 
 //        final Millisecond now = new Millisecond();
         this.series.add(new Millisecond(), this.lastValue);
+        
+        if (id == 300) timer.stop();
 
 //        System.out.println("Current Time in Milliseconds = " + now.toString()+", Current Value : "+this.lastValue);
     }
